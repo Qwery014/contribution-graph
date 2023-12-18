@@ -1,0 +1,151 @@
+$tooltip-bg: #000;
+$gray: #7c7c7c;
+
+%tooltip-text {
+  z-index: 4;
+  position: relative;
+}
+
+.table {
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  &__month_list {
+    display: inline-grid;
+    grid-template-columns: 26px repeat(12, 1fr);
+    width: 791px;
+    .table__month_item {
+      justify-self: center;
+    }
+  }
+  &__graph {
+    display: inline-grid;
+    grid-template-rows: auto;
+    grid-template-columns: 26px repeat(51, 15px);
+    &_column {
+      display: grid;
+      align-items: center;
+      grid-template-rows: repeat(7, 15px);
+      grid-template-areas:
+        "mo"
+        "tu"
+        "we"
+        "th"
+        "fr"
+        "st"
+        "sn";
+      .week-mo {
+        grid-area: mo;
+      }
+      .week-we {
+        grid-area: we;
+      }
+      .week-fr {
+        grid-area: fr;
+      }
+    }
+    &_item {
+      position: relative;
+      input {
+        display: none;
+      }
+    }
+    &_tooltip {
+      position: absolute;
+      background-color: $tooltip-bg;
+      min-height: 15px;
+      color: #fff;
+      padding: 5px 10px;
+      bottom: calc(100% - 10px);
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-wrap: nowrap;
+      border-radius: 3px;
+      text-align: center;
+      z-index: 3;
+      display: none;
+      transition: opacity 0.5s;
+      p:nth-child(1) {
+        @extend %tooltip-text;
+      }
+      p:nth-child(2) {
+        font-size: 10px;
+        color: $gray;
+        @extend %tooltip-text;
+      }
+      &-corner {
+        width: 10px;
+        height: 10px;
+        background-color: $tooltip-bg;
+        position: absolute;
+        z-index: 2;
+        bottom: -8px;
+        left: 50%;
+        transform: translate(-50%, -50%) rotate(45deg) skew(10deg, 10deg);
+      }
+    }
+    &_cell {
+      width: 15px;
+      height: 15px;
+      border: 1px solid #fff;
+      background-color: #ededed;
+      display: block;
+      cursor: pointer;
+      &:hover {
+        border: 1px solid #00000050;
+      }
+    }
+    .table__hint_blocks-item &_tooltip {
+      padding: 8px 10px;
+      min-width: 120px;
+    }
+    &_cell:hover ~ &_tooltip,
+    .table__hint_blocks-item:hover &_tooltip {
+      animation: tooltipAnim 0.5s cubic-bezier(0.39, 0.575, 0.565, 1) 0.5s both;
+      opacity: 1;
+      display: block;
+      z-index: 5;
+    }
+    .checkbox:checked ~ &_tooltip {
+      animation: tooltipAnim 1s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      z-index: 4;
+    }
+    .checkbox:checked ~ &_cell {
+      border: 1px solid #00000090;
+    }
+  }
+  &__hint {
+    display: flex;
+    margin-top: 15px;
+    margin-left: 26px;
+    font-size: 10px;
+    gap: 8px;
+    align-items: center;
+    &_blocks {
+      display: flex;
+      gap: 2px;
+      &-item {
+        position: relative;
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+}
+
+@keyframes tooltipAnim {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  1% {
+    display: block;
+    opacity: 0;
+  }
+  100% {
+    display: block;
+    opacity: 1;
+  }
+}
